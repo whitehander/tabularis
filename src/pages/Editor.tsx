@@ -1129,6 +1129,17 @@ export const Editor = () => {
         return;
       }
 
+      for (let index = 1; index <= 9; index += 1) {
+        if (!matchesShortcut(e, `focus_tab_${index}`)) continue;
+
+        const targetTab = tabsRef.current[index - 1];
+        if (targetTab) {
+          e.preventDefault();
+          setActiveTabId(targetTab.id);
+        }
+        return;
+      }
+
       if (matchesShortcut(e, "next_page")) {
         const tab = tabsRef.current.find(
           (t) => t.id === activeTabIdRef.current,
@@ -1160,6 +1171,7 @@ export const Editor = () => {
     addTab,
     handleCloseTab,
     runQuery,
+    setActiveTabId,
   ]);
 
   const handleRefresh = useCallback(() => {

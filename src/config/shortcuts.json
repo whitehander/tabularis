@@ -70,6 +70,96 @@
     "overridable": true
   },
   {
+    "id": "focus_tab_1",
+    "category": "editor",
+    "defaultMac": "⌘+1",
+    "defaultWin": "Ctrl+1",
+    "macMatch": { "metaKey": true, "key": "1" },
+    "winMatch": { "ctrlKey": true, "key": "1" },
+    "i18nKey": "settings.shortcuts.focusTab1",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_2",
+    "category": "editor",
+    "defaultMac": "⌘+2",
+    "defaultWin": "Ctrl+2",
+    "macMatch": { "metaKey": true, "key": "2" },
+    "winMatch": { "ctrlKey": true, "key": "2" },
+    "i18nKey": "settings.shortcuts.focusTab2",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_3",
+    "category": "editor",
+    "defaultMac": "⌘+3",
+    "defaultWin": "Ctrl+3",
+    "macMatch": { "metaKey": true, "key": "3" },
+    "winMatch": { "ctrlKey": true, "key": "3" },
+    "i18nKey": "settings.shortcuts.focusTab3",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_4",
+    "category": "editor",
+    "defaultMac": "⌘+4",
+    "defaultWin": "Ctrl+4",
+    "macMatch": { "metaKey": true, "key": "4" },
+    "winMatch": { "ctrlKey": true, "key": "4" },
+    "i18nKey": "settings.shortcuts.focusTab4",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_5",
+    "category": "editor",
+    "defaultMac": "⌘+5",
+    "defaultWin": "Ctrl+5",
+    "macMatch": { "metaKey": true, "key": "5" },
+    "winMatch": { "ctrlKey": true, "key": "5" },
+    "i18nKey": "settings.shortcuts.focusTab5",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_6",
+    "category": "editor",
+    "defaultMac": "⌘+6",
+    "defaultWin": "Ctrl+6",
+    "macMatch": { "metaKey": true, "key": "6" },
+    "winMatch": { "ctrlKey": true, "key": "6" },
+    "i18nKey": "settings.shortcuts.focusTab6",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_7",
+    "category": "editor",
+    "defaultMac": "⌘+7",
+    "defaultWin": "Ctrl+7",
+    "macMatch": { "metaKey": true, "key": "7" },
+    "winMatch": { "ctrlKey": true, "key": "7" },
+    "i18nKey": "settings.shortcuts.focusTab7",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_8",
+    "category": "editor",
+    "defaultMac": "⌘+8",
+    "defaultWin": "Ctrl+8",
+    "macMatch": { "metaKey": true, "key": "8" },
+    "winMatch": { "ctrlKey": true, "key": "8" },
+    "i18nKey": "settings.shortcuts.focusTab8",
+    "overridable": true
+  },
+  {
+    "id": "focus_tab_9",
+    "category": "editor",
+    "defaultMac": "⌘+9",
+    "defaultWin": "Ctrl+9",
+    "macMatch": { "metaKey": true, "key": "9" },
+    "winMatch": { "ctrlKey": true, "key": "9" },
+    "i18nKey": "settings.shortcuts.focusTab9",
+    "overridable": true
+  },
+  {
     "id": "copy_selection",
     "category": "editor",
     "defaultMac": "⌘+C",
