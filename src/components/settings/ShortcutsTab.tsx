@@ -194,8 +194,8 @@ export function ShortcutsTab() {
         icon={<Keyboard size={14} className="text-muted" />}
         description={
           isMac
-            ? "Use \u2318 (Cmd) as the main modifier. Shortcuts with a lock icon are built-in and cannot be changed."
-            : "Use Ctrl as the main modifier. Shortcuts with a lock icon are built-in and cannot be changed."
+            ? t("settings.shortcuts.modifierHintMac")
+            : t("settings.shortcuts.modifierHintWin")
         }
       >
         <div className="space-y-4 pt-3">

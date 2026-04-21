@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { X, Loader2, BookOpen } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { useSettings } from "../../hooks/useSettings";
@@ -14,6 +15,7 @@ interface AiExplainModalProps {
 }
 
 export const AiExplainModal = ({ isOpen, onClose, query }: AiExplainModalProps) => {
+  const { t } = useTranslation();
   const { settings } = useSettings();
   const { currentTheme } = useTheme();
   const [explanation, setExplanation] = useState("");
@@ -29,7 +31,7 @@ export const AiExplainModal = ({ isOpen, onClose, query }: AiExplainModalProps) 
 
   const handleExplain = async () => {
     if (!settings.aiProvider) {
-        setError("Please configure AI provider in Settings.");
+        setError(t("ai.configRequired"));
         return;
     }
 
@@ -62,7 +64,7 @@ export const AiExplainModal = ({ isOpen, onClose, query }: AiExplainModalProps) 
         <div className="flex items-center justify-between p-4 border-b border-default">
           <div className="flex items-center gap-2 text-primary font-medium">
             <BookOpen size={18} className="text-blue-400" />
-            <span>AI Query Explanation</span>
+            <span>{t("ai.explainQuery")}</span>
           </div>
           <button onClick={onClose} className="text-secondary hover:text-primary transition-colors">
             <X size={18} />
@@ -73,14 +75,14 @@ export const AiExplainModal = ({ isOpen, onClose, query }: AiExplainModalProps) 
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {!settings.aiProvider && (
              <div className="bg-warning-bg border border-warning-border text-warning-text px-4 py-3 rounded text-sm">
-                ⚠️ AI Provider not configured. Please go to Settings {'>'} AI.
+                {t("ai.configRequired")}
              </div>
           )}
 
           {/* Original Query */}
           <div>
             <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-2">
-                Query
+                {t("ai.queryLabel")}
             </label>
             <div className="h-32 border border-default rounded-lg overflow-hidden">
                 <MonacoEditor
@@ -102,13 +104,13 @@ export const AiExplainModal = ({ isOpen, onClose, query }: AiExplainModalProps) 
           {/* Explanation */}
           <div>
             <label className="block text-xs font-semibold text-muted uppercase tracking-wider mb-2">
-                Explanation
+                {t("ai.explanationLabel")}
             </label>
             <div className="bg-base border border-strong rounded-lg p-4 min-h-[150px] text-secondary leading-relaxed whitespace-pre-wrap">
                 {isLoading ? (
                     <div className="flex items-center gap-2 text-muted">
                         <Loader2 size={16} className="animate-spin" />
-                        Generating explanation...
+                        {t("ai.generatingExplanation")}
                     </div>
                 ) : error ? (
                     <div className="text-error-text">
@@ -127,7 +129,7 @@ export const AiExplainModal = ({ isOpen, onClose, query }: AiExplainModalProps) 
             onClick={onClose}
             className="px-4 py-2 bg-surface-secondary hover:bg-surface-tertiary text-primary rounded-lg text-sm transition-colors"
           >
-            Close
+            {t("common.close")}
           </button>
         </div>
       </div>

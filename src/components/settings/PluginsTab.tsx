@@ -679,7 +679,7 @@ export function PluginsTab({ onOpenPluginSettings }: PluginsTabProps) {
 
               const builtinBadge = isBuiltin ? (
                 <span className="text-[10px] font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-px rounded-md">
-                  Built-in
+                  {t("settings.plugins.builtin")}
                 </span>
               ) : undefined;
 
@@ -711,8 +711,8 @@ export function PluginsTab({ onOpenPluginSettings }: PluginsTabProps) {
                         disabled={isBuiltin}
                         aria-label={
                           isEnabled
-                            ? "Disable plugin"
-                            : "Enable plugin"
+                            ? t("settings.plugins.disable")
+                            : t("settings.plugins.enable")
                         }
                         className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                           isEnabled

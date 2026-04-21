@@ -412,6 +412,9 @@
       "confirmRemove": "Are you sure you want to remove \"{{name}}\"? This will delete the plugin files.",
       "enabled": "Enabled",
       "disabled": "Disabled",
+      "enable": "Enable plugin",
+      "disable": "Disable plugin",
+      "builtin": "Built-in",
       "installError": {
         "title": "Installation Failed",
         "subtitle": "An error occurred while installing the plugin. See the details below.",
@@ -483,7 +486,9 @@
       "pressKeys": "Press key combination...",
       "notebookRunAll": "Run All Cells",
       "categories_notebook": "Notebook",
-      "pasteImportClipboard": "Import from Clipboard"
+      "pasteImportClipboard": "Import from Clipboard",
+      "modifierHintMac": "Use \u2318 (Cmd) as the main modifier. Shortcuts with a lock icon are built-in and cannot be changed.",
+      "modifierHintWin": "Use Ctrl as the main modifier. Shortcuts with a lock icon are built-in and cannot be changed."
     }
   },
   "update": {
@@ -711,6 +716,17 @@
     "failedCreateRow": "Failed to create new row: ",
     "failedProcessInsertions": "Failed to process insertions: ",
     "fieldRequired": "This field is required",
+    "maximizeResults": "Maximize Results (Hide Editor)",
+    "showEditor": "Show Editor",
+    "hideResultsPanel": "Hide Results Panel (Maximize Editor)",
+    "showResultsPanel": "Show Results Panel",
+    "firstPage": "First Page",
+    "previousPage": "Previous Page",
+    "nextPage": "Next Page",
+    "lastPage": "Last Page",
+    "submit": "Submit",
+    "rollback": "Rollback",
+    "pending": "pending",
     "newNotebook": "New Notebook",
     "visualExplain": {
       "title": "Visual Explain",

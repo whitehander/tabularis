@@ -29,7 +29,7 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
           finalSettings = {
             ...finalSettings,
             resultPageSize: localData.queryLimit || 500,
-            language: localData.language || "auto",
+            language: localData.language || DEFAULT_SETTINGS.language,
           };
           // Save migrated data to backend
           await invoke("save_config", { config: finalSettings });

@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import en from './locales/en.json';
+import ko from './locales/ko.json';
 import it from './locales/it.json';
 import es from './locales/es.json';
 import zh from './locales/zh.json';
@@ -15,6 +16,7 @@ import de from './locales/de.json';
  */
 export const SUPPORTED_LANGUAGES = [
   { id: "en", label: "English", translation: en },
+  { id: "ko", label: "한국어", translation: ko },
   { id: "it", label: "Italiano", translation: it },
   { id: "es", label: "Español", translation: es },
   { id: "zh", label: "中文", translation: zh },
@@ -34,6 +36,8 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
+    supportedLngs: SUPPORTED_LANGUAGES.map(({ id }) => id),
+    load: 'languageOnly',
     interpolation: {
       escapeValue: false,
     },
@@ -42,3 +46,5 @@ i18n
       caches: ['localStorage', 'cookie'],
     },
   });
+
+export default i18n;

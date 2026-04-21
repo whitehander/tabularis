@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { X, Sparkles, Loader2 } from "lucide-react";
 import { invoke } from "@tauri-apps/api/core";
 import { useDatabase } from "../../hooks/useDatabase";
@@ -17,6 +18,7 @@ interface TableColumn {
 }
 
 export const AiQueryModal = ({ isOpen, onClose, onInsert }: AiQueryModalProps) => {
+  const { t } = useTranslation();
   const { activeConnectionId, tables, activeSchema } = useDatabase();
   const { settings } = useSettings();
   
@@ -54,11 +56,11 @@ export const AiQueryModal = ({ isOpen, onClose, onInsert }: AiQueryModalProps) =
       setSchemaContext(context);
     } catch (err) {
       console.error("Failed to load schema:", err);
-      setError("Failed to load database schema context");
+      setError(t("ai.schemaError"));
     } finally {
       setIsSchemaLoading(false);
     }
-  }, [activeConnectionId, tables, activeSchema]);
+  }, [activeConnectionId, tables, activeSchema, t]);
 
   useEffect(() => {
     if (isOpen && activeConnectionId && tables.length > 0) {
@@ -68,7 +70,7 @@ export const AiQueryModal = ({ isOpen, onClose, onInsert }: AiQueryModalProps) =
 
   const handleGenerate = async () => {
     if (!prompt.trim() || !settings.aiProvider) {
-        setError("Please configure AI provider in Settings and enter a prompt.");
+        setError(t("ai.configError"));
         return;
     }
 
@@ -101,7 +103,7 @@ export const AiQueryModal = ({ isOpen, onClose, onInsert }: AiQueryModalProps) =
         <div className="flex items-center justify-between p-4 border-b border-default">
           <div className="flex items-center gap-2 text-primary font-medium">
             <Sparkles size={18} className="text-yellow-400" />
-            <span>AI Query Assist</span>
+            <span>{t("ai.assist")}</span>
           </div>
           <button onClick={onClose} className="text-secondary hover:text-primary transition-colors">
             <X size={18} />
@@ -112,18 +114,18 @@ export const AiQueryModal = ({ isOpen, onClose, onInsert }: AiQueryModalProps) =
         <div className="p-6 space-y-4">
           {!settings.aiProvider && (
              <div className="bg-warning-bg border border-warning-border text-warning-text px-4 py-3 rounded text-sm">
-                ⚠️ AI Provider not configured. Please go to Settings {'>'} AI.
+                {t("ai.configRequired")}
              </div>
           )}
 
           <div>
             <label className="block text-sm font-medium text-secondary mb-2">
-              Describe your query in natural language
+              {t("ai.enterPrompt")}
             </label>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="e.g. Find all users who signed up last month and ordered a 'Premium' plan..."
+              placeholder={t("ai.promptPlaceholder")}
               className="w-full h-32 bg-base border border-strong rounded-lg p-3 text-primary focus:outline-none focus:border-focus transition-colors resize-none"
               autoFocus
               onKeyDown={(e) => {
@@ -143,7 +145,7 @@ export const AiQueryModal = ({ isOpen, onClose, onInsert }: AiQueryModalProps) =
           {isSchemaLoading && (
             <div className="flex items-center gap-2 text-xs text-muted">
                 <Loader2 size={12} className="animate-spin" />
-                Reading database schema...
+                {t("ai.readingSchema")}
             </div>
           )}
         </div>
@@ -164,12 +166,12 @@ export const AiQueryModal = ({ isOpen, onClose, onInsert }: AiQueryModalProps) =
             {isLoading ? (
               <>
                 <Loader2 size={16} className="animate-spin" />
-                Generating...
+                {t("ai.generating")}
               </>
             ) : (
               <>
                 <Sparkles size={16} />
-                Generate SQL
+                {t("ai.generateSql")}
               </>
             )}
           </button>

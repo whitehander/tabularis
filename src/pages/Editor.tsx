@@ -2624,8 +2624,8 @@ export const Editor = () => {
                   className="text-muted hover:text-secondary transition-colors p-1 hover:bg-surface-secondary rounded flex items-center gap-1 text-xs"
                   title={
                     isEditorOpen
-                      ? "Maximize Results (Hide Editor)"
-                      : "Show Editor"
+                      ? t("editor.maximizeResults")
+                      : t("editor.showEditor")
                   }
                 >
                   {isEditorOpen ? (
@@ -2633,7 +2633,7 @@ export const Editor = () => {
                   ) : (
                     <ChevronDown size={16} />
                   )}
-                  {!isEditorOpen && <span>Show Editor</span>}
+                  {!isEditorOpen && <span>{t("editor.showEditor")}</span>}
                 </button>
               </div>
 
@@ -2644,7 +2644,7 @@ export const Editor = () => {
                     setIsResultsCollapsed(true);
                   }}
                   className="text-muted hover:text-secondary transition-colors p-1 hover:bg-surface-secondary rounded"
-                  title="Hide Results Panel (Maximize Editor)"
+                  title={t("editor.hideResultsPanel")}
                 >
                   <ChevronDown size={16} />
                 </button>
@@ -2777,7 +2777,7 @@ export const Editor = () => {
                           }
                           onClick={() => runQuery(activeTab.query, 1)}
                           className="p-1 hover:bg-surface-tertiary text-secondary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
-                          title="First Page"
+                          title={t("editor.firstPage")}
                         >
                           <ChevronsLeft size={14} />
                         </button>
@@ -2793,7 +2793,7 @@ export const Editor = () => {
                             )
                           }
                           className="p-1 hover:bg-surface-tertiary text-secondary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed border-l border-strong"
-                          title="Previous Page"
+                          title={t("editor.previousPage")}
                         >
                           <ChevronLeft size={14} />
                         </button>
@@ -2887,7 +2887,7 @@ export const Editor = () => {
                             )
                           }
                           className="p-1 hover:bg-surface-tertiary text-secondary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed border-l border-strong"
-                          title="Next Page"
+                          title={t("editor.nextPage")}
                         >
                           <ChevronRight size={14} />
                         </button>
@@ -2906,7 +2906,7 @@ export const Editor = () => {
                             )
                           }
                           className="p-1 hover:bg-surface-tertiary text-secondary hover:text-white disabled:opacity-30 disabled:cursor-not-allowed border-l border-strong"
-                          title="Last Page"
+                          title={t("editor.lastPage")}
                         >
                           <ChevronsRight size={14} />
                         </button>
@@ -3007,7 +3007,7 @@ export const Editor = () => {
                           title={t("editor.submitChanges")}
                         >
                           <Check size={14} />
-                          <span>Submit</span>
+                          <span>{t("editor.submit")}</span>
                         </button>
                         <button
                           onClick={handleRollbackChanges}
@@ -3016,7 +3016,7 @@ export const Editor = () => {
                           title={t("editor.rollbackChanges")}
                         >
                           <Undo2 size={14} />
-                          <span>Rollback</span>
+                          <span>{t("editor.rollback")}</span>
                         </button>
                         <span className="text-[10px] text-blue-400 bg-blue-900/20 border border-blue-900/30 px-2 py-0.5 rounded-full font-medium select-none ml-2">
                           {Object.keys(activeTab.pendingChanges || {}).length +
@@ -3024,7 +3024,7 @@ export const Editor = () => {
                               .length +
                             Object.keys(activeTab.pendingInsertions || {})
                               .length}{" "}
-                          pending
+                          {t("editor.pending")}
                         </span>
                       </div>
                     )}
@@ -3082,7 +3082,7 @@ export const Editor = () => {
           <button
             onClick={() => setIsResultsCollapsed(false)}
             className="text-muted hover:text-secondary transition-colors p-1 hover:bg-surface-secondary rounded"
-            title="Show Results Panel"
+            title={t("editor.showResultsPanel")}
           >
             <ChevronUp size={16} />
           </button>

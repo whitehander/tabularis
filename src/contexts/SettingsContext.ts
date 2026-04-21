@@ -64,7 +64,7 @@ export const SettingsContext = createContext<SettingsContextType | undefined>(
 
 export const DEFAULT_SETTINGS: Settings = {
   resultPageSize: 500,
-  language: "auto",
+  language: "ko",
   fontFamily: "System",
   fontSize: 14,
   aiEnabled: false,

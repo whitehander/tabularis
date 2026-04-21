@@ -87,7 +87,7 @@ export function migrateFromLocalStorage(
     const localData = JSON.parse(savedLocal);
     const migratedSettings: Partial<Settings> = {
       resultPageSize: localData.queryLimit || 500,
-      language: localData.language || "auto",
+      language: localData.language || "ko",
     };
 
     return { settings: migratedSettings, migrated: true };
