@@ -5,6 +5,7 @@ export type { AppLanguage };
 export type CopyFormat = "csv" | "json";
 export type AiProvider =
   | "openai"
+  | "openai-codex"
   | "anthropic"
   | "openrouter"
   | "ollama"

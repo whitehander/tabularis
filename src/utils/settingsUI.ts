@@ -29,6 +29,8 @@ export function getProviderLabel(id: AiProvider): string {
   switch (id) {
     case 'openai':
       return 'OpenAI';
+    case 'openai-codex':
+      return 'OpenAI Codex (OAuth)';
     case 'anthropic':
       return 'Anthropic';
     case 'openrouter':

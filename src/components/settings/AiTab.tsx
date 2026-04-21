@@ -37,6 +37,11 @@ const PROVIDERS: Array<{
   icon: ReactNode;
 }> = [
   {
+    id: "openai-codex",
+    label: "OpenAI Codex",
+    icon: <OpenAIIcon size={18} className="text-[#10a37f]" />,
+  },
+  {
     id: "openai",
     label: "OpenAI",
     icon: <OpenAIIcon size={18} className="text-[#10a37f]" />,
@@ -120,6 +125,9 @@ export function AiTab() {
       const openai = await invoke<AiKeyStatus>("check_ai_key_status", {
         provider: "openai",
       });
+      const openaiCodex = await invoke<AiKeyStatus>("check_ai_key_status", {
+        provider: "openai-codex",
+      });
       const anthropic = await invoke<AiKeyStatus>("check_ai_key_status", {
         provider: "anthropic",
       });
@@ -132,6 +140,7 @@ export function AiTab() {
       const ollama = { configured: true, fromEnv: false };
       setAiKeyStatus({
         openai,
+        "openai-codex": openaiCodex,
         anthropic,
         openrouter,
         "custom-openai": customOpenai,
@@ -294,7 +303,8 @@ export function AiTab() {
                   )}
                 </>
               ) : (
-                settings.aiProvider !== "ollama" && (
+                settings.aiProvider !== "ollama" &&
+                settings.aiProvider !== "openai-codex" && (
                   <span className="text-muted text-xs bg-surface-secondary px-2 py-0.5 rounded-full border border-default">
                     {t("settings.ai.notConfigured")}
                   </span>
@@ -302,8 +312,48 @@ export function AiTab() {
               )}
             </div>
 
+            {/* External OAuth via Codex */}
+            {settings.aiProvider === "openai-codex" && (
+              <div className="space-y-3 py-3">
+                <p className="text-xs text-muted">
+                  {t("settings.ai.codexOauthDesc")}
+                </p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={async () => {
+                      try {
+                        await invoke("launch_codex_login");
+                        showAlert(t("settings.ai.codexOauthLaunch"), {
+                          title: t("common.success"),
+                          kind: "info",
+                        });
+                      } catch (e) {
+                        showAlert(String(e), {
+                          title: t("common.error"),
+                          kind: "error",
+                        });
+                      }
+                    }}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-medium transition-colors"
+                  >
+                    {t("settings.ai.codexOauthLogin")}
+                  </button>
+                  <button
+                    onClick={() => {
+                      void checkKeys();
+                      void loadModels(false);
+                    }}
+                    className="px-4 py-2 bg-surface-secondary hover:bg-surface-tertiary border border-default text-secondary hover:text-primary rounded-lg text-sm font-medium transition-colors"
+                  >
+                    {t("settings.ai.codexOauthRefresh")}
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* API Key */}
-            {settings.aiProvider !== "ollama" && (
+            {settings.aiProvider !== "ollama" &&
+              settings.aiProvider !== "openai-codex" && (
               <div className="space-y-2 py-3">
                 <label className="block text-sm font-medium text-secondary">
                   {t("settings.ai.apiKey", {

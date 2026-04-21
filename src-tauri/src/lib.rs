@@ -280,6 +280,7 @@ pub fn run() {
             config::relaunch_app,
             config::set_ai_key,
             config::delete_ai_key,
+            config::launch_codex_login,
             config::check_ai_key,
             config::check_ai_key_status,
             config::get_system_prompt,

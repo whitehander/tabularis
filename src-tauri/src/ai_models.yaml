@@ -7,6 +7,12 @@ openai:
   - gpt-oss-120B
   - gpt-oss-20B
 
+openai-codex:
+  - gpt-5.4
+  - gpt-5.4-mini
+  - gpt-5-codex
+  - gpt-5.3-codex
+
 anthropic:
   - claude-opus-4.5
   - claude-sonnet-4.5

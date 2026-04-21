@@ -3,6 +3,7 @@ use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::PathBuf;
+use std::process::Command;
 use tauri::AppHandle;
 use tauri::Manager;
 use std::sync::RwLock;
@@ -308,6 +309,87 @@ pub fn delete_ai_key(provider: String) -> Result<(), String> {
     keychain_utils::delete_ai_key(&provider)
 }
 
+#[derive(Deserialize)]
+struct CodexAuthTokens {
+    access_token: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct CodexAuthFile {
+    auth_mode: Option<String>,
+    tokens: Option<CodexAuthTokens>,
+}
+
+fn get_codex_auth_path() -> Result<PathBuf, String> {
+    if let Ok(codex_home) = std::env::var("CODEX_HOME") {
+        return Ok(PathBuf::from(codex_home).join("auth.json"));
+    }
+
+    let home = directories::BaseDirs::new()
+        .ok_or("Could not resolve home directory for Codex auth".to_string())?;
+    Ok(home.home_dir().join(".codex").join("auth.json"))
+}
+
+pub fn get_openai_codex_access_token() -> Result<String, String> {
+    let auth_path = get_codex_auth_path()?;
+    let raw = fs::read_to_string(&auth_path)
+        .map_err(|_| format!("Codex auth file not found at {}. Run `codex login` first.", auth_path.display()))?;
+    let parsed: CodexAuthFile = serde_json::from_str(&raw)
+        .map_err(|e| format!("Failed to parse Codex auth file: {}", e))?;
+
+    if parsed.auth_mode.as_deref() != Some("chatgpt") {
+        return Err("Codex is not logged in with ChatGPT OAuth. Run `codex login` first.".to_string());
+    }
+
+    let token = parsed
+        .tokens
+        .and_then(|tokens| tokens.access_token)
+        .filter(|token| !token.trim().is_empty())
+        .ok_or("Codex auth file does not contain a usable access token. Re-run `codex login`.".to_string())?;
+
+    Ok(token)
+}
+
+#[tauri::command]
+pub fn launch_codex_login() -> Result<(), String> {
+    #[cfg(target_os = "macos")]
+    {
+        let script = r#"tell application "Terminal"
+activate
+do script "codex login"
+end tell"#;
+
+        Command::new("osascript")
+            .arg("-e")
+            .arg(script)
+            .spawn()
+            .map_err(|e| format!("Failed to launch Codex login in Terminal: {}", e))?;
+        return Ok(());
+    }
+
+    #[cfg(target_os = "linux")]
+    {
+        Command::new("sh")
+            .arg("-lc")
+            .arg("x-terminal-emulator -e 'sh -lc \"codex login; exec $SHELL\"'")
+            .spawn()
+            .map_err(|e| format!("Failed to launch Codex login terminal: {}", e))?;
+        return Ok(());
+    }
+
+    #[cfg(target_os = "windows")]
+    {
+        Command::new("cmd")
+            .args(["/C", "start", "cmd", "/K", "codex login"])
+            .spawn()
+            .map_err(|e| format!("Failed to launch Codex login terminal: {}", e))?;
+        return Ok(());
+    }
+
+    #[allow(unreachable_code)]
+    Err("Launching Codex login is not supported on this platform.".to_string())
+}
+
 /// Get the configured maximum BLOB size in bytes, or DEFAULT_MAX_BLOB_SIZE if not set
 pub fn get_max_blob_size<R: tauri::Runtime>(app: &AppHandle<R>) -> u64 {
     let config = load_config_internal(app);
@@ -333,6 +415,10 @@ pub fn get_ai_api_key(provider: &str) -> Result<String, String> {
         "minimax" => "MINIMAX_API_KEY",
         _ => "",
     };
+
+    if provider == "openai-codex" {
+        return get_openai_codex_access_token();
+    }
 
     if !env_var.is_empty() {
         if let Ok(key) = std::env::var(env_var) {
@@ -368,6 +454,13 @@ pub fn get_ai_api_key_status(provider: &str) -> AiKeyStatus {
         "minimax" => "MINIMAX_API_KEY",
         _ => "",
     };
+
+    if provider == "openai-codex" {
+        return AiKeyStatus {
+            configured: get_openai_codex_access_token().is_ok(),
+            from_env: false,
+        };
+    }
 
     let env_exists = if !env_var.is_empty() {
         std::env::var(env_var)

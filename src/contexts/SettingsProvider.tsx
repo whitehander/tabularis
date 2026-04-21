@@ -69,22 +69,29 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
           if (hasOpenAI) {
             detectedProvider = "openai";
           } else {
-            const hasAnthropic = await invoke<boolean>("check_ai_key", {
-              provider: "anthropic",
+            const hasOpenAICodex = await invoke<boolean>("check_ai_key", {
+              provider: "openai-codex",
             });
-            if (hasAnthropic) {
-              detectedProvider = "anthropic";
+            if (hasOpenAICodex) {
+              detectedProvider = "openai-codex";
             } else {
-              const hasOpenRouter = await invoke<boolean>("check_ai_key", {
-                provider: "openrouter",
+              const hasAnthropic = await invoke<boolean>("check_ai_key", {
+                provider: "anthropic",
               });
-              if (hasOpenRouter) detectedProvider = "openrouter";
-            else {
-              const hasMiniMax = await invoke<boolean>("check_ai_key", {
-                provider: "minimax",
-              });
-              if (hasMiniMax) detectedProvider = "minimax";
-            }
+              if (hasAnthropic) {
+                detectedProvider = "anthropic";
+              } else {
+                const hasOpenRouter = await invoke<boolean>("check_ai_key", {
+                  provider: "openrouter",
+                });
+                if (hasOpenRouter) detectedProvider = "openrouter";
+                else {
+                  const hasMiniMax = await invoke<boolean>("check_ai_key", {
+                    provider: "minimax",
+                  });
+                  if (hasMiniMax) detectedProvider = "minimax";
+                }
+              }
             }
           }
 
@@ -97,7 +104,12 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
 
             // Only set provider if not already set
             if (!finalSettings.aiProvider) {
-              finalSettings.aiProvider = detectedProvider as "openai" | "anthropic" | "openrouter" | "minimax";
+              finalSettings.aiProvider = detectedProvider as
+                | "openai"
+                | "openai-codex"
+                | "anthropic"
+                | "openrouter"
+                | "minimax";
             }
             // Only set model if not already set AND we have a model available
             if (!finalSettings.aiModel && firstModel) {

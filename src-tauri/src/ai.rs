@@ -1,4 +1,5 @@
 use crate::config;
+use futures::StreamExt;
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
@@ -272,6 +273,17 @@ pub async fn get_ai_models(
             // 24 hours = 86400 seconds
             if now - cache.last_updated < 86400 {
                 let mut cached_models = cache.models;
+                let default_models = load_default_models();
+
+                for (provider, models) in default_models {
+                    let entry = cached_models.entry(provider).or_default();
+                    for model in models {
+                        if !entry.contains(&model) {
+                            entry.push(model);
+                        }
+                    }
+                    entry.sort();
+                }
 
                 // Always refresh Ollama as it is local and fast
                 let ollama_models = fetch_ollama_models(ollama_port).await;
@@ -429,7 +441,7 @@ async fn dispatch_provider(
     system_prompt: &str,
     ollama_port: u16,
 ) -> Result<String, String> {
-    let api_key = if gen_req.provider != "ollama" {
+    let api_key = if gen_req.provider != "ollama" && gen_req.provider != "openai-codex" {
         config::get_ai_api_key(&gen_req.provider)?
     } else {
         String::new()
@@ -438,6 +450,10 @@ async fn dispatch_provider(
     let client = Client::new();
     match gen_req.provider.as_str() {
         "openai" => generate_openai(&client, &api_key, gen_req, system_prompt).await,
+        "openai-codex" => {
+            let access_token = config::get_openai_codex_access_token()?;
+            generate_openai_codex(&client, &access_token, gen_req, system_prompt).await
+        }
         "anthropic" => generate_anthropic(&client, &api_key, gen_req, system_prompt).await,
         "openrouter" => generate_openrouter(&client, &api_key, gen_req, system_prompt).await,
         "ollama" => generate_ollama(&client, gen_req, system_prompt, ollama_port).await,
@@ -734,6 +750,115 @@ async fn generate_custom_openai(
     Ok(clean_response(content))
 }
 
+async fn generate_openai_codex(
+    client: &Client,
+    access_token: &str,
+    req: &AiGenerateRequest,
+    system_prompt: &str,
+) -> Result<String, String> {
+    let body = json!({
+        "model": req.model,
+        "instructions": system_prompt,
+        "input": [
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "input_text",
+                        "text": req.prompt
+                    }
+                ]
+            }
+        ],
+        "store": false,
+        "stream": true
+    });
+
+    let res = client
+        .post("https://chatgpt.com/backend-api/codex/responses")
+        .header("Authorization", format!("Bearer {}", access_token))
+        .header("Content-Type", "application/json")
+        .header("User-Agent", "codex_cli_rs/0.0.0 (Tabularis)")
+        .header("originator", "codex_cli_rs")
+        .header("Origin", "https://chatgpt.com")
+        .header("Referer", "https://chatgpt.com/")
+        .json(&body)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+
+    if !res.status().is_success() {
+        let error_text = res.text().await.unwrap_or_default();
+        return Err(format!("OpenAI Codex OAuth Error: {}", error_text));
+    }
+
+    let mut stream = res.bytes_stream();
+    let mut buffer = String::new();
+    let mut output_text = String::new();
+    let mut completed_fallback: Option<String> = None;
+
+    while let Some(chunk) = stream.next().await {
+        let chunk = chunk.map_err(|e| e.to_string())?;
+        buffer.push_str(&String::from_utf8_lossy(&chunk));
+
+        while let Some(separator_index) = buffer.find("\n\n") {
+            let frame = buffer[..separator_index].to_string();
+            buffer.drain(..separator_index + 2);
+
+            for line in frame.lines() {
+                let Some(payload) = line.strip_prefix("data: ") else {
+                    continue;
+                };
+
+                if payload == "[DONE]" {
+                    break;
+                }
+
+                let event: serde_json::Value =
+                    serde_json::from_str(payload).map_err(|e| e.to_string())?;
+
+                match event["type"].as_str() {
+                    Some("response.output_text.delta") => {
+                        if let Some(delta) = event["delta"].as_str() {
+                            output_text.push_str(delta);
+                        }
+                    }
+                    Some("response.output_text.done") if output_text.is_empty() => {
+                        if let Some(text) = event["text"].as_str() {
+                            output_text.push_str(text);
+                        }
+                    }
+                    Some("response.completed") => {
+                        if let Some(text) = event["response"]["output_text"].as_str() {
+                            completed_fallback = Some(text.to_string());
+                        } else if let Some(text) = event["response"]["output"][0]["content"][0]["text"]
+                            .as_str()
+                        {
+                            completed_fallback = Some(text.to_string());
+                        }
+                    }
+                    Some("response.failed") => {
+                        return Err(format!("OpenAI Codex OAuth Error: {}", payload));
+                    }
+                    _ => {}
+                }
+            }
+        }
+    }
+
+    let final_text = if output_text.trim().is_empty() {
+        completed_fallback.unwrap_or_default()
+    } else {
+        output_text
+    };
+
+    if final_text.trim().is_empty() {
+        return Err("OpenAI Codex OAuth Error: empty response".to_string());
+    }
+
+    Ok(clean_response(&final_text))
+}
+
 async fn generate_openrouter(
     client: &Client,
     api_key: &str,
@@ -912,6 +1037,7 @@ mod tests {
     fn test_load_default_models() {
         let models = load_default_models();
         assert!(models.contains_key("openai"));
+        assert!(models.contains_key("openai-codex"));
         assert!(models.contains_key("anthropic"));
         assert!(models.contains_key("openrouter"));
         assert!(models.contains_key("minimax"));
@@ -919,6 +1045,9 @@ mod tests {
         // Check for new futuristic models from yaml
         let openai = models.get("openai").unwrap();
         assert!(openai.contains(&"gpt-5.2".to_string()));
+
+        let openai_codex = models.get("openai-codex").unwrap();
+        assert!(openai_codex.contains(&"gpt-5.4".to_string()));
 
         // Check MiniMax models
         let minimax = models.get("minimax").unwrap();
