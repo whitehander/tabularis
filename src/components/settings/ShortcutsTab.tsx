@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Keyboard, Lock, RotateCcw, Loader2, X } from "lucide-react";
+import { Keyboard, RotateCcw, Loader2, X } from "lucide-react";
 import clsx from "clsx";
 import { useKeybindings } from "../../hooks/useKeybindings";
 import { formatEvent, formatMatch, parseCombo } from "../../utils/keybindings";
@@ -230,15 +230,7 @@ export function ShortcutsTab() {
                       className="flex items-center px-5 py-3.5 gap-4 hover:bg-surface-secondary/20 transition-colors"
                     >
                       <div className="shrink-0">
-                        {s.overridable ? (
-                          <Keyboard size={14} className="text-blue-400" />
-                        ) : (
-                          <span
-                            title={t("settings.shortcuts.notOverridable")}
-                          >
-                            <Lock size={14} className="text-muted/50" />
-                          </span>
-                        )}
+                        <Keyboard size={14} className="text-blue-400" />
                       </div>
 
                       <div className="flex-1 min-w-0">
@@ -247,33 +239,31 @@ export function ShortcutsTab() {
                         </span>
                         {hasOverride && (
                           <span className="ml-2 text-xs text-blue-400 font-medium">
-                            customized
+                            {t("settings.shortcuts.customized")}
                           </span>
                         )}
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        {s.overridable ? (
-                          <>
+                        <>
+                          <button
+                            onClick={() => openEdit(s)}
+                            className="px-2.5 py-1 text-xs rounded-lg border border-default text-muted hover:text-primary hover:border-blue-500/60 hover:bg-blue-500/5 transition-colors"
+                          >
+                            {t("common.edit")}
+                          </button>
+                          {hasOverride && (
                             <button
-                              onClick={() => openEdit(s)}
-                              className="px-2.5 py-1 text-xs rounded-lg border border-default text-muted hover:text-primary hover:border-blue-500/60 hover:bg-blue-500/5 transition-colors"
+                              onClick={() => resetOverride(s.id)}
+                              title={t(
+                                "settings.shortcuts.resetToDefault",
+                              )}
+                              className="p-1.5 rounded-lg text-muted hover:text-primary hover:bg-surface-secondary transition-colors"
                             >
-                              {t("common.edit")}
+                              <RotateCcw size={13} />
                             </button>
-                            {hasOverride && (
-                              <button
-                                onClick={() => resetOverride(s.id)}
-                                title={t(
-                                  "settings.shortcuts.resetToDefault",
-                                )}
-                                className="p-1.5 rounded-lg text-muted hover:text-primary hover:bg-surface-secondary transition-colors"
-                              >
-                                <RotateCcw size={13} />
-                              </button>
-                            )}
-                          </>
-                        ) : null}
+                          )}
+                        </>
 
                         <kbd className="px-2.5 py-1 text-xs font-mono bg-surface-secondary border border-default rounded-lg text-secondary min-w-[100px] text-center">
                           {label}

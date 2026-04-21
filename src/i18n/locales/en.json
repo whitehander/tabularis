@@ -486,13 +486,14 @@
       "prevPage": "Previous page",
       "switchConnection": "Switch to connection 1–9",
       "resetToDefault": "Reset to default",
+      "customized": "Customized",
       "notOverridable": "Built-in, not customizable",
       "pressKeys": "Press key combination...",
       "notebookRunAll": "Run All Cells",
       "categories_notebook": "Notebook",
       "pasteImportClipboard": "Import from Clipboard",
-      "modifierHintMac": "Use \u2318 (Cmd) as the main modifier. Shortcuts with a lock icon are built-in and cannot be changed.",
-      "modifierHintWin": "Use Ctrl as the main modifier. Shortcuts with a lock icon are built-in and cannot be changed."
+      "modifierHintMac": "Use \u2318 (Cmd) as the main modifier. All shortcuts can be customized.",
+      "modifierHintWin": "Use Ctrl as the main modifier. All shortcuts can be customized."
     }
   },
   "update": {

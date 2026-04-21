@@ -7,7 +7,7 @@
     "macMatch": { "metaKey": true, "key": "F5" },
     "winMatch": { "ctrlKey": true, "key": "F5" },
     "i18nKey": "settings.shortcuts.runQuery",
-    "overridable": false
+    "overridable": true
   },
   {
     "id": "run_query_editor",
@@ -17,7 +17,7 @@
     "macMatch": { "metaKey": true, "key": "Enter" },
     "winMatch": { "ctrlKey": true, "key": "Enter" },
     "i18nKey": "settings.shortcuts.runQueryEditor",
-    "overridable": false
+    "overridable": true
   },
   {
     "id": "new_tab",
@@ -67,7 +67,7 @@
     "macMatch": { "ctrlKey": true, "key": "Tab" },
     "winMatch": { "ctrlKey": true, "key": "Tab" },
     "i18nKey": "settings.shortcuts.tabSwitcher",
-    "overridable": false
+    "overridable": true
   },
   {
     "id": "copy_selection",
@@ -77,7 +77,7 @@
     "macMatch": { "metaKey": true, "key": "c" },
     "winMatch": { "ctrlKey": true, "key": "c" },
     "i18nKey": "settings.shortcuts.copySelection",
-    "overridable": false
+    "overridable": true
   },
   {
     "id": "toggle_sidebar",
@@ -117,7 +117,7 @@
     "macMatch": { "metaKey": true, "shiftKey": true, "key": "1" },
     "winMatch": { "ctrlKey": true, "shiftKey": true, "key": "1" },
     "i18nKey": "settings.shortcuts.switchConnection",
-    "overridable": false
+    "overridable": true
   },
   {
     "id": "paste_import_clipboard",

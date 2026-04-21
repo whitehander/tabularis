@@ -486,13 +486,14 @@
       "prevPage": "이전 페이지",
       "switchConnection": "1–9번 연결로 전환",
       "resetToDefault": "기본값으로 재설정",
+      "customized": "사용자 지정",
       "notOverridable": "내장 단축키, 변경 불가",
       "pressKeys": "키 조합을 입력하세요...",
       "notebookRunAll": "모든 셀 실행",
       "categories_notebook": "노트북",
       "pasteImportClipboard": "클립보드에서 가져오기",
-      "modifierHintMac": "\u2318 (Cmd)를 기본 수정 키로 사용합니다. 자물쇠 아이콘이 있는 단축키는 내장되어 있어 변경할 수 없습니다.",
-      "modifierHintWin": "Ctrl을 기본 수정 키로 사용합니다. 자물쇠 아이콘이 있는 단축키는 내장되어 있어 변경할 수 없습니다."
+      "modifierHintMac": "\u2318 (Cmd)를 기본 수정 키로 사용합니다. 모든 단축키를 사용자 지정할 수 있습니다.",
+      "modifierHintWin": "Ctrl을 기본 수정 키로 사용합니다. 모든 단축키를 사용자 지정할 수 있습니다."
     }
   },
   "update": {
