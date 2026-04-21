@@ -6,20 +6,20 @@
 
 <p align="center">
   <strong>README:</strong>
-  <a href="./README.md">English</a> |
+  <a href="./README.md">한국어</a> |
+  <a href="./README.en.md">English</a> |
   <a href="./README.it.md">Italiano</a> |
   <a href="./README.es.md">Español</a> |
   <a href="./README.zh-CN.md">中文</a> |
   <a href="./README.fr.md">Français</a> |
-  <a href="./README.de.md">Deutsch</a> |
-  <a href="./README.ko.md">한국어</a>
+  <a href="./README.de.md">Deutsch</a>
 </p>
 
 面向现代数据库的开源桌面客户端。支持 PostgreSQL、MySQL/MariaDB 和 SQLite，内置 SQL 笔记本、AI 功能、MCP 集成以及外部插件系统。
 
 **Discord** - [加入社区](https://discord.gg/YrZPHAwMSG)，与维护者交流、提交反馈并获取帮助。
 
-> 这是翻译版文档。若需最新且权威的说明，请同时参考[英文 README](./README.md)。
+> 这是翻译版文档。若需最新且权威的说明，请同时参考[英文 README](./README.en.md)。
 
 ## 下载
 

@@ -6,20 +6,20 @@
 
 <p align="center">
   <strong>README:</strong>
-  <a href="./README.md">English</a> |
+  <a href="./README.md">한국어</a> |
+  <a href="./README.en.md">English</a> |
   <a href="./README.it.md">Italiano</a> |
   <a href="./README.es.md">Español</a> |
   <a href="./README.zh-CN.md">中文</a> |
   <a href="./README.fr.md">Français</a> |
-  <a href="./README.de.md">Deutsch</a> |
-  <a href="./README.ko.md">한국어</a>
+  <a href="./README.de.md">Deutsch</a>
 </p>
 
 Client desktop open source per database moderni. Supporta PostgreSQL, MySQL/MariaDB e SQLite, con notebook SQL, funzioni AI, integrazione MCP e un sistema plugin esterno.
 
 **Discord** - [Entra nel server](https://discord.gg/YrZPHAwMSG) per parlare con i maintainer, condividere feedback e ricevere supporto.
 
-> Documento tradotto. Per la versione di riferimento sempre aggiornata, consulta anche il [README in inglese](./README.md).
+> Documento tradotto. Per la versione di riferimento sempre aggiornata, consulta anche il [README in inglese](./README.en.md).
 
 ## Download
 
