@@ -42,6 +42,12 @@ export function useGlobalShortcuts() {
         return;
       }
 
+      if (matchesShortcut(e, "open_settings")) {
+        e.preventDefault();
+        navigate("/settings");
+        return;
+      }
+
       if (matchesShortcut(e, "new_connection")) {
         e.preventDefault();
         navigate("/connections", { state: { openNew: true } });
