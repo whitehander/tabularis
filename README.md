@@ -11,11 +11,12 @@
   <a href="./README.es.md">Español</a> |
   <a href="./README.zh-CN.md">中文</a> |
   <a href="./README.fr.md">Français</a> |
-  <a href="./README.de.md">Deutsch</a>
+  <a href="./README.de.md">Deutsch</a> |
+  <a href="./README.ko.md">한국어</a>
 </p>
 
 <p align="center">
-  
+
 ![](https://img.shields.io/github/release/TabularisDB/tabularis.svg?style=flat)
 ![](https://img.shields.io/github/downloads/TabularisDB/tabularis/total.svg?style=flat)
 ![Build & Release](https://github.com/TabularisDB/tabularis/workflows/Release/badge.svg)
@@ -32,7 +33,7 @@
 
 An open-source desktop client for modern databases. Supports PostgreSQL, MySQL/MariaDB and SQLite and is hackable with plugins, with notebooks, AI, and MCP built in.
 
-**Available in:** English, Italian, Spanish, Chinese (Simplified), French, German
+**README available in:** English, Italian, Spanish, Chinese (Simplified), French, German, Korean
 
 **Discord** - [Join our Discord server](https://discord.gg/YrZPHAwMSG) to talk with the maintainers, share feedback, and get help from the community.
 
